@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "renatamarianiz.netlify.app/"
+baseURL = "https://renatamarianiz.netlify.app/"
 languageCode = "en-us"
 title = "Portfolio website of Renata Mariani"
 theme = "forty"
