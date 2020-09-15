@@ -53,7 +53,7 @@ disqusShortname = ""
 
     [[params.navigation.links]]
       name = "Projects"
-      url = "blogs/ipsum"
+      url = "projects/ipsum"
 
  #   [[params.navigation.links]]
  #     name = "Elements"
