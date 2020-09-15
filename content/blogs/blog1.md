@@ -8,7 +8,7 @@ draft: false
 image: pic10.jpg
 keywords: ""
 slug: ipsum
-title: "2016 California Contributors plots""
+title: "2016 California Contributors plots"
 ---
 
 ```{r, setup, warning=FALSE, message=FALSE, echo=FALSE}
