@@ -13,13 +13,13 @@ title: Advanced Pandas
 
 ```{r}
 library(reticulate)
+library("readxl")
 ```
 
-```{python}
-import pandas as pd
+First we will load the Energy Indicators data frame of the [energy supply and renewable electricity production](https://wfvvjvoqmcoaadnahbleeb.coursera-apps.org/notebooks/Energy%20Indicators.xls) from the United Nations for the year 2013.
 
-print("hi")
-```
+
+
 
 
 
