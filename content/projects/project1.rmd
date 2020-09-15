@@ -5,7 +5,7 @@ description: Reproduction of the plot of the 2016 contributors in the United Sta
 draft: no
 image: pic10.jpg
 keywords: ''
-slug: ipsum
+slug: teste
 categories:
 - R
 - ggplot
