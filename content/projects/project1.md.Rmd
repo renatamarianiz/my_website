@@ -41,15 +41,6 @@ library(vroom)
 library(tidyquant)
 ```
 
-
-In this challenge we will reproduce the plots of the 2016 California Contributors, shown below.
-
-```{r challenge2, echo=FALSE, out.width="100%"}
-
-knitr::include_graphics(here::here("images", "challenge2.png"), error = FALSE)
-
-```
-
 Firstly, we will import the CA contributors dataset and the zip code data base and merge both.
 
 ```{r, load_CA_data, warnings= FALSE, message=FALSE}
@@ -126,11 +117,7 @@ hillary_trump_top10 <- hillary + trump +
                aspect.ratio = 9/4,
                plot.caption = element_text(hjust = 0.55, vjust = 0.5, face = "bold"))
 
-# Save it as a picture and set the correct proportion
-ggsave("hillary_trump_top10.jpg", plot = hillary_trump_top10, width = 9, height = 4, path = here::here("images"))
-
-# Show created picture
-knitr::include_graphics(here::here("images", "hillary_trump_top10.jpg"))
+hillary_trump_top10
 
 ```  
 
@@ -169,10 +156,6 @@ top10_plotS <- CA_contributors_2016_cleaned %>%
  #scale_x_continuous(labels = scales::dollar_format()) +
   NULL
 
-# Save plot as a picture
-ggsave("top10plot.jpg",plot=top10_plotS,width = 20,height = 15, path = here::here("images"))
-
-# Place picture in code
-knitr::include_graphics(here::here("images", "top10plot.jpg"))
+top10_plotS
 
 ```
