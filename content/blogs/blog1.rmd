@@ -176,4 +176,3 @@ ggsave("top10plot.jpg",plot=top10_plotS,width = 20,height = 15, path = here::her
 knitr::include_graphics(here::here("images", "top10plot.jpg"))
 
 ```
-
