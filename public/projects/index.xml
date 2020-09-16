@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>coding on Portfolio website of Renata Mariani</title>
+    <link>/projects/</link>
+    <description>Recent content in coding on Portfolio website of Renata Mariani</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate>
+    
+	<atom:link href="/projects/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2016 California Contributors plots</title>
+      <link>/projects/teste/</link>
+      <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
+      
+      <guid>/projects/teste/</guid>
+      <description>Firstly, we will import the CA contributors dataset and the zip code data base and merge both.
+# Load dataframes CA_contributors_2016 &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;CA_contributors_2016.csv&amp;quot;)) zip_code &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;zip_code_database.csv&amp;quot;)) # Changing the column zip of our zip_code dataframe to a numeric value zip_code &amp;lt;- zip_code %&amp;gt;% mutate(zip = as.numeric(zip)) # Merging dataframes CA_contributors_2016 &amp;lt;- CA_contributors_2016 %&amp;gt;% inner_join(zip_code, by = &amp;quot;zip&amp;quot;) Secondly, we will clean our dataframe and select/calculate the variables that will be used in our analysis.</description>
+    </item>
+    
+  </channel>
+</rss>

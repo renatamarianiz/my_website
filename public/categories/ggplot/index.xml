@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on Portfolio website of Renata Mariani</title>
-    <link>/categories/r/</link>
-    <description>Recent content in R on Portfolio website of Renata Mariani</description>
+    <title>ggplot on Portfolio website of Renata Mariani</title>
+    <link>/categories/ggplot/</link>
+    <description>Recent content in ggplot on Portfolio website of Renata Mariani</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 31 Oct 2017 21:28:43 -0500</lastBuildDate>
     
-	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/ggplot/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -29,17 +29,6 @@ knitr::include_graphics(here::here(&amp;quot;images&amp;quot;, &amp;quot;challen
       <guid>/projects/teste/</guid>
       <description>Firstly, we will import the CA contributors dataset and the zip code data base and merge both.
 # Load dataframes CA_contributors_2016 &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;CA_contributors_2016.csv&amp;quot;)) zip_code &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;zip_code_database.csv&amp;quot;)) # Changing the column zip of our zip_code dataframe to a numeric value zip_code &amp;lt;- zip_code %&amp;gt;% mutate(zip = as.numeric(zip)) # Merging dataframes CA_contributors_2016 &amp;lt;- CA_contributors_2016 %&amp;gt;% inner_join(zip_code, by = &amp;quot;zip&amp;quot;) Secondly, we will clean our dataframe and select/calculate the variables that will be used in our analysis.</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/post/2015-07-23-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
     </item>
     
   </channel>

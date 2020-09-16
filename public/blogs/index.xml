@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Aliquam</title>
+      <title>Advanced Pandas</title>
       <link>/blogs/aliquam/</link>
-      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
+      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/aliquam/</guid>
-      <description></description>
+      <description>library(reticulate) library(&amp;quot;readxl&amp;quot;) First we will load the Energy Indicators data frame of the energy supply and renewable electricity production from the United Nations for the year 2013.</description>
     </item>
     
     <item>
@@ -39,12 +39,13 @@
     </item>
     
     <item>
-      <title>Ipsum</title>
+      <title>2016 California Contributors plots</title>
       <link>/blogs/ipsum/</link>
       <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
       
       <guid>/blogs/ipsum/</guid>
-      <description>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</description>
+      <description>knitr::opts_chunk$set( message = FALSE, warning = FALSE, tidy=FALSE, # display code as typed size=&amp;quot;small&amp;quot;) # slightly smaller font for code options(digits = 3) # default figure size knitr::opts_chunk$set( fig.width=6.75, fig.height=6.75, fig.align = &amp;quot;center&amp;quot; ) library(tidyverse) # Load ggplot2, dplyr, and all the other tidyverse packages library(mosaic) library(ggthemes) library(lubridate) library(fivethirtyeight) library(here) library(skimr) library(janitor) library(vroom) library(tidyquant) In this challenge we will reproduce the plots of the 2016 California Contributors, shown below.
+knitr::include_graphics(here::here(&amp;quot;images&amp;quot;, &amp;quot;challenge2.</description>
     </item>
     
   </channel>

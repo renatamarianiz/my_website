@@ -80,38 +80,13 @@
                                 <h1>2016 California Contributors plots</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic10.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/projects/pic10.jpg" alt="" /></span>
                             
-                            <pre><code class="language-{r," data-lang="{r,">knitr::opts_chunk$set(
-  message = FALSE, 
-  warning = FALSE, 
-  tidy=FALSE,     # display code as typed
-  size=&quot;small&quot;)   # slightly smaller font for code
-options(digits = 3)
+                            
 
-# default figure size
-knitr::opts_chunk$set(
-  fig.width=6.75, 
-  fig.height=6.75,
-  fig.align = &quot;center&quot;
-)
-</code></pre><pre><code class="language-{r" data-lang="{r">library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
-library(mosaic)
-library(ggthemes)
-library(lubridate)
-library(fivethirtyeight)
-library(here)
-library(skimr)
-library(janitor)
-library(vroom)
-library(tidyquant)
-</code></pre><p>In this challenge we will reproduce the plots of the 2016 California Contributors, shown below.</p>
-<pre><code class="language-{r" data-lang="{r">
-knitr::include_graphics(here::here(&quot;images&quot;, &quot;challenge2.png&quot;), error = FALSE)
 
-</code></pre><p>Firstly, we will import the CA contributors dataset and the zip code data base and merge both.</p>
-<pre><code class="language-{r," data-lang="{r,">
-# Load dataframes
+<p>Firstly, we will import the CA contributors dataset and the zip code data base and merge both.</p>
+<pre class="r"><code># Load dataframes
 CA_contributors_2016 &lt;- vroom::vroom(here::here(&quot;data&quot;,&quot;CA_contributors_2016.csv&quot;))
 zip_code &lt;- vroom::vroom(here::here(&quot;data&quot;,&quot;zip_code_database.csv&quot;))
 
@@ -121,19 +96,16 @@ zip_code &lt;- zip_code %&gt;%
 
 # Merging dataframes
 CA_contributors_2016 &lt;- CA_contributors_2016 %&gt;% 
-  inner_join(zip_code, by =  &quot;zip&quot;)
-
-</code></pre><p>Secondly, we will clean our dataframe and select/calculate the variables that will be used in our analysis.</p>
-<pre><code class="language-{r," data-lang="{r,">
-CA_contributors_2016_cleaned &lt;- CA_contributors_2016 %&gt;%
+  inner_join(zip_code, by =  &quot;zip&quot;)</code></pre>
+<p>Secondly, we will clean our dataframe and select/calculate the variables that will be used in our analysis.</p>
+<pre class="r"><code>CA_contributors_2016_cleaned &lt;- CA_contributors_2016 %&gt;%
   group_by(cand_nm,primary_city) %&gt;% 
   summarise(total_amt = sum(contb_receipt_amt)) %&gt;% 
-  select(candidate = cand_nm, city = primary_city, money_raised = total_amt)
+  select(candidate = cand_nm, city = primary_city, money_raised = total_amt)</code></pre>
+<p>Then, we will plot Trump’s and Hillary’s top 10 contribution cities graphs separately, and change its aesthetics.</p>
+<pre class="r"><code>library(scales)
 
-</code></pre><p>Then, we will plot Trump&rsquo;s and Hillary&rsquo;s top 10 contribution cities graphs separately, and change its aesthetics.</p>
-<pre><code class="language-{r," data-lang="{r,">library(scales)
-
-# Plot Hillary's top 10 contribution cities
+# Plot Hillary&#39;s top 10 contribution cities
 hillary &lt;- CA_contributors_2016_cleaned %&gt;%
   filter(candidate == &quot;Clinton, Hillary Rodham&quot;) %&gt;%
   top_n(10, wt = money_raised) %&gt;% 
@@ -147,7 +119,7 @@ hillary &lt;- CA_contributors_2016_cleaned %&gt;%
   ) + 
   theme_bw()
 
-# Plot Trump's top 10 contribution cities
+# Plot Trump&#39;s top 10 contribution cities
 trump &lt;- CA_contributors_2016_cleaned %&gt;%
   filter(candidate == &quot;Trump, Donald J.&quot;) %&gt;%
   top_n(10, wt = money_raised) %&gt;% 
@@ -159,10 +131,9 @@ trump &lt;- CA_contributors_2016_cleaned %&gt;%
   theme(strip.background = element_rect(fill = &quot;grey&quot;), 
         stip.text = element_text(size = 8, color = &quot;black&quot;),
   ) + 
-  theme_bw()
-
-</code></pre><p>Now using patchwork it is possible to join both graphs in a singular visualization</p>
-<pre><code class="language-{r,hillary_trump}" data-lang="{r,hillary_trump}">library(patchwork)
+  theme_bw()</code></pre>
+<p>Now using patchwork it is possible to join both graphs in a singular visualization</p>
+<pre class="r"><code>library(patchwork)
 
 # Combine them together and add a main title/x axis
 hillary_trump_top10 &lt;- hillary + trump +
@@ -171,14 +142,10 @@ hillary_trump_top10 &lt;- hillary + trump +
                aspect.ratio = 9/4,
                plot.caption = element_text(hjust = 0.55, vjust = 0.5, face = &quot;bold&quot;))
 
-# Save it as a picture and set the correct proportion
-ggsave(&quot;hillary_trump_top10.jpg&quot;, plot = hillary_trump_top10, width = 9, height = 4, path = here::here(&quot;images&quot;))
-
-# Show created picture
-knitr::include_graphics(here::here(&quot;images&quot;, &quot;hillary_trump_top10.jpg&quot;))
-
-</code></pre><p>What if instead of analysing only 2 candidates we decided to see the top 10 cities for the top 10 candidates. Bellow we will build this plot.</p>
-<pre><code class="language-{r," data-lang="{r,">library(scales)
+hillary_trump_top10</code></pre>
+<p><img src="/projects/project1.md_files/figure-html/hillary_trump-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>What if instead of analysing only 2 candidates we decided to see the top 10 cities for the top 10 candidates. Bellow we will build this plot.</p>
+<pre class="r"><code>library(scales)
 library(tidytext)
 
 # Create a data frame with the top 10 candidates
@@ -210,13 +177,9 @@ top10_plotS &lt;- CA_contributors_2016_cleaned %&gt;%
  #scale_x_continuous(labels = scales::dollar_format()) +
   NULL
 
-# Save plot as a picture
-ggsave(&quot;top10plot.jpg&quot;,plot=top10_plotS,width = 20,height = 15, path = here::here(&quot;images&quot;))
+top10_plotS</code></pre>
+<p><img src="/projects/project1.md_files/figure-html/top10_candidates_plots-1.png" width="648" style="display: block; margin: auto;" /></p>
 
-# Place picture in code
-knitr::include_graphics(here::here(&quot;images&quot;, &quot;top10plot.jpg&quot;))
-
-</code></pre>
                         </div>
                     </section>
             <!-- Disqus Inject -->

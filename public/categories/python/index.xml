@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on Portfolio website of Renata Mariani</title>
+    <link>/categories/python/</link>
+    <description>Recent content in python on Portfolio website of Renata Mariani</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Sep 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Advanced Pandas</title>
+      <link>/blogs/aliquam/</link>
+      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/aliquam/</guid>
+      <description>library(reticulate) library(&amp;quot;readxl&amp;quot;) First we will load the Energy Indicators data frame of the energy supply and renewable electricity production from the United Nations for the year 2013.</description>
+    </item>
+    
+  </channel>
+</rss>
