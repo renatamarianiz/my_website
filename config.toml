@@ -48,16 +48,16 @@ disqusShortname = ""
       url = "#"
 
     [[params.navigation.links]]
-      name = "Blogs"
+      name = "Projects"
       url = "blogs"
 
-    [[params.navigation.links]]
-      name = "Projects"
-      url = "projects/teste"
+#    [[params.navigation.links]]
+#      name = "Projects"
+#      url = "projects/teste"
 
-    [[params.navigation.links]]
-      name = "Elements"
-      url = "elements.html"
+#    [[params.navigation.links]]
+#      name = "Elements"
+#      url = "elements.html"
 
     # Add custom links here by uncommenting code below. To remove links just delete
     # the [[params.navigation.links]] map associated with that link. Copy and paste
@@ -110,9 +110,9 @@ disqusShortname = ""
       url = "blogs/magna"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
+      title = "2016 California Contributors"
+      subtitle = "Plots of the california contributors in 2016 using R"
+      image = "blog1.jpg"
       url = "blogs/ipsum"
 
     [[params.tiles.showcase]]
