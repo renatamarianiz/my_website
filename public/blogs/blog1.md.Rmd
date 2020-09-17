@@ -5,11 +5,12 @@ description: Reproduction of the plot of the 2016 contributors in the United Sta
 draft: no
 image: pic10.jpg
 keywords: ''
-slug: teste
+slug: ipsum
 categories:
 - R
 - ggplot
 ---
+
 
 ```{r, setup, warning=FALSE, message=FALSE, echo=FALSE}
 knitr::opts_chunk$set(
@@ -55,7 +56,10 @@ Firstly, we will import the CA contributors dataset and the zip code data base a
 
 # Load dataframes
 CA_contributors_2016 <- vroom::vroom(here::here("data","CA_contributors_2016.csv"))
+glimpse(CA_contributors_2016)
+
 zip_code <- vroom::vroom(here::here("data","zip_code_database.csv"))
+glimpse(zip_code)
 
 # Changing the column zip of our zip_code dataframe to a numeric value
 zip_code <- zip_code %>% 
@@ -66,7 +70,7 @@ CA_contributors_2016 <- CA_contributors_2016 %>%
   inner_join(zip_code, by =  "zip")
 
 #seeing our result
-skim(CA_contributors_2016)
+glimpse(CA_contributors_2016)
 
 ```
 
@@ -80,7 +84,7 @@ CA_contributors_2016_cleaned <- CA_contributors_2016 %>%
   select(candidate = cand_nm, city = primary_city, money_raised = total_amt)
 
 #seeing if it worked
-skim(CA_contributors_2016_cleaned)
+glimpse(CA_contributors_2016_cleaned)
 
 ```
 

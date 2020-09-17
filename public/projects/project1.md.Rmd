@@ -41,6 +41,14 @@ library(vroom)
 library(tidyquant)
 ```
 
+In this challenge we will reproduce the plots of the 2016 California Contributors, shown below.
+
+```{r challenge2, echo=FALSE, out.width="100%"}
+
+knitr::include_graphics(here::here("images", "challenge2.png"), error = FALSE)
+
+```
+
 Firstly, we will import the CA contributors dataset and the zip code data base and merge both.
 
 ```{r, load_CA_data, warnings= FALSE, message=FALSE}
@@ -57,6 +65,9 @@ zip_code <- zip_code %>%
 CA_contributors_2016 <- CA_contributors_2016 %>% 
   inner_join(zip_code, by =  "zip")
 
+#seeing our result
+skim(CA_contributors_2016)
+
 ```
 
 Secondly, we will clean our dataframe and select/calculate the variables that will be used in our analysis.
@@ -67,6 +78,9 @@ CA_contributors_2016_cleaned <- CA_contributors_2016 %>%
   group_by(cand_nm,primary_city) %>% 
   summarise(total_amt = sum(contb_receipt_amt)) %>% 
   select(candidate = cand_nm, city = primary_city, money_raised = total_amt)
+
+#seeing if it worked
+skim(CA_contributors_2016_cleaned)
 
 ```
 
@@ -103,6 +117,10 @@ trump <- CA_contributors_2016_cleaned %>%
   ) + 
   theme_bw()
 
+
+#showing our plots
+hillary
+trump
 ```
 
 Now using patchwork it is possible to join both graphs in a singular visualization
@@ -117,7 +135,11 @@ hillary_trump_top10 <- hillary + trump +
                aspect.ratio = 9/4,
                plot.caption = element_text(hjust = 0.55, vjust = 0.5, face = "bold"))
 
-hillary_trump_top10
+# Save it as a picture and set the correct proportion
+ggsave("hillary_trump_top10.jpg", plot = hillary_trump_top10, width = 9, height = 4, path = here::here("images"))
+
+# Show created picture
+knitr::include_graphics(here::here("images", "hillary_trump_top10.jpg"))
 
 ```  
 
@@ -156,6 +178,10 @@ top10_plotS <- CA_contributors_2016_cleaned %>%
  #scale_x_continuous(labels = scales::dollar_format()) +
   NULL
 
-top10_plotS
+# Save plot as a picture
+ggsave("top10plot.jpg",plot=top10_plotS,width = 20,height = 15, path = here::here("images"))
+
+# Place picture in code
+knitr::include_graphics(here::here("images", "top10plot.jpg"))
 
 ```
