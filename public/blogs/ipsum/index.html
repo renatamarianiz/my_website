@@ -85,8 +85,6 @@
                             
 
 
-<p>In this challenge we will reproduce the plots of the 2016 California Contributors, shown below.</p>
-<p><img src="/Users/remzanella/Documents/03.%20LBS/03.%20Advance%20Statistics%20in%20R/my_website/images/challenge2.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Firstly, we will import the CA contributors dataset and the zip code data base and merge both.</p>
 <pre class="r"><code># Load dataframes
 CA_contributors_2016 &lt;- vroom::vroom(here::here(&quot;data&quot;,&quot;CA_contributors_2016.csv&quot;))
@@ -206,15 +204,12 @@ hillary</code></pre>
 hillary_trump_top10 &lt;- hillary + trump +
   plot_annotation(title = &quot;Where did candidates raise most money?&quot;, caption = &quot;Amount Raised&quot;) 
   theme_update(plot.title = element_text(size = 10, hjust = 0.1, face = &quot;bold&quot;),
-               aspect.ratio = 9/4,
+               aspect.ratio = 2/1,
                plot.caption = element_text(hjust = 0.55, vjust = 0.5, face = &quot;bold&quot;))
 
-# Save it as a picture and set the correct proportion
-ggsave(&quot;hillary_trump_top10.jpg&quot;, plot = hillary_trump_top10, width = 9, height = 4, path = here::here(&quot;images&quot;))
 
-# Show created picture
-knitr::include_graphics(here::here(&quot;images&quot;, &quot;hillary_trump_top10.jpg&quot;))</code></pre>
-<p><img src="/Users/remzanella/Documents/03.%20LBS/03.%20Advance%20Statistics%20in%20R/my_website/images/hillary_trump_top10.jpg" width="1350" style="display: block; margin: auto;" /></p>
+hillary_trump_top10</code></pre>
+<p><img src="/blogs/blog1.md_files/figure-html/hillary_trump-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p>What if instead of analysing only 2 candidates we decided to see the top 10 cities for the top 10 candidates. Bellow we will build this plot.</p>
 <pre class="r"><code>library(scales)
 library(tidytext)
@@ -248,12 +243,8 @@ top10_plotS &lt;- CA_contributors_2016_cleaned %&gt;%
  #scale_x_continuous(labels = scales::dollar_format()) +
   NULL
 
-# Save plot as a picture
-ggsave(&quot;top10plot.jpg&quot;,plot=top10_plotS,width = 20,height = 15, path = here::here(&quot;images&quot;))
-
-# Place picture in code
-knitr::include_graphics(here::here(&quot;images&quot;, &quot;top10plot.jpg&quot;))</code></pre>
-<p><img src="/Users/remzanella/Documents/03.%20LBS/03.%20Advance%20Statistics%20in%20R/my_website/images/top10plot.jpg" width="3000" style="display: block; margin: auto;" /></p>
+top10_plotS</code></pre>
+<p><img src="/blogs/blog1.md_files/figure-html/top10_candidates_plots-1.png" width="648" style="display: block; margin: auto;" /></p>
 
                         </div>
                     </section>
