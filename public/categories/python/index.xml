@@ -17,7 +17,7 @@
       <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/aliquam/</guid>
-      <description>library(reticulate) library(&amp;quot;readxl&amp;quot;) First we will load the Energy Indicators data frame of the energy supply and renewable electricity production from the United Nations for the year 2013.</description>
+      <description>library(reticulate) First we will load the Energy Indicators data frame of the energy supply and renewable electricity production from the United Nations for the year 2013.</description>
     </item>
     
   </channel>

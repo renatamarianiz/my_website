@@ -1,0 +1,146 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:26:09-05:00"
+description: "Comparison of monthly bike rentals between 2015-2019 with 2020"
+draft: false
+image: pic09.jpg
+keywords: ""
+slug: magna
+title: "Excess rentals in TfL bike sharing"
+---
+
+
+Our aim is to calculate the expected number of rentals per month between 2015-2019. Afterwards, we will see how each month of 2020 compares to the expected rentals.
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+```
+
+First we will upload the TfL data of daily-bike rentals with the following code.
+
+```{r, get_tfl_data, cache=TRUE}
+url <- "https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx"
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp <- tempfile(fileext = ".xlsx")))
+
+# Use read_excel to read it as dataframe
+bike0 <- read_excel(bike.temp,
+                   sheet = "Data",
+                   range = cell_cols("A:B"))
+
+# change dates to get year, month, and week
+bike <- bike0 %>% 
+  clean_names() %>% 
+  rename (bikes_hired = number_of_bicycle_hires) %>% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))
+```
+
+
+Our aim is to calculate the expected number of rentals per month between 2015-2019. Afterwards, we will see how each month of 2020 compares to the expected rentals. For that, we will first calculate the average bike rentals for each month (considering all years). Later we will plot the monthly weekly rental average per year and fill the difference between this and the expected average. When the monthly average per year is lower than the total average, the fill should be red, otherwise green.
+
+
+```{r tfl_absolute_monthly_change_code}
+
+#first we need to filter our database to have only years >= 2015
+bike_filtered <- 
+  bike %>% filter(year >= 2015)
+
+#summarizing per month - we don't need the week value, only monthly
+bike_filtered <- 
+  bike_filtered %>% 
+  group_by(year,month) %>% 
+  summarize(bikes_hired = mean(bikes_hired))
+
+#now we will calculate the monthly average throughout the years and save it in a new column
+bike_filtered <- 
+  bike_filtered %>% 
+  group_by(month) %>% 
+  mutate(average_hire = mean(bikes_hired)) %>% 
+  ungroup()
+
+#calculate the change from monthly average
+bike_filtered <-
+  bike_filtered  %>% 
+  mutate(change_monthlyavg = bikes_hired - average_hire)
+
+#we will first need to interpolate the dataframe to fix graph intersections while making the ribbon
+bike_interp <- bike_filtered  %>% 
+  #splitting the dataframe - one for each year
+  split(.$year) %>% 
+  #now we will create a df of interpolated values using map
+                      #interpolated months and bikes hired
+  map_df(~data.frame(year = approx(.x$month, .x$bikes_hired, n = 80), 
+                     #interpolated months and avg hire
+                     nat = approx(.x$month, .x$average_hire, n = 80), 
+                     #label for each year
+                     year = .x$year[1],
+                     #label for each month
+                     month = .x$month[1]))
+
+#creating a vector with month names
+month_label <- c("Jan", "Feb", "Mar",
+           "Apr", "May", "Jun",
+           "Jul", "Aug","Sep", 
+           "Oce", "Nov", "Dec")
+
+#now we will plot our graph with these interpolated values
+challenge2.1 <- ggplot(bike_interp, aes(x = nat.x,y= nat.y)) +  facet_wrap(~year) +
+  geom_line(color = "#1d00f6", size = 2) +
+  geom_line(aes(nat.x, year.y), color = "black") +
+  #adding ribbons - fills area between plots
+  geom_ribbon(aes(ymin = nat.y, ymax = pmin(year.y, nat.y)), fill = "#EAB5B7" , alpha = 0.8) +
+  geom_ribbon(aes(ymin = year.y, ymax = pmin(year.y, nat.y)), fill = "#CBECCE", alpha = 0.8) +
+  #change theme
+  theme_minimal() +
+  #change our x-axis, currently it has the interpolated values
+  scale_x_continuous(breaks= c(1,2,3,4,5,6,7,8,9,10,11,12),
+        labels=month_label) +
+  #adding titles
+  labs(title = "Monthly changes in TfL bike rentals",
+       subtitle = "Change from monthly average shown in blue \nand calculated between 2015-2019",
+       caption = "Source: TfL, London Data Store",
+       y = "Bike rentals",
+       x = "") +
+  #making titles bold
+  theme(plot.title = element_text(face = "bold"),
+        axis.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "bold")) +
+  theme(aspect.ratio=2/5)
+
+#showing plot
+challenge2.1
+
+```
+
+Due to the lockdown restrictions imposed by the government as a measurement to fight the current pandemic, 2020 has had the lowest rental values for March and April. In these months it would be normally expected an increase in rentals due to the end of winter and beginning of spring. On the other hand, values rocketed in just one month (from April to May). This is probably because restrictions still applied and people wanted to do some physical exercise, and at the same time not spend so much money on purchasing a new bike. Values for July are under the expected when considering the normal bike rental average. Notwithstanding, even though the sudden increase in usage, 2018 shows the highest amount of bike rentals, specifically during the summer.

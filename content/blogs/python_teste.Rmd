@@ -1,0 +1,28 @@
+---
+categories:
+- "python"
+- ""
+date: "2020-09-15"
+description: Project to analyse energy supply and GDP data in different countries
+draft: false
+image: pic07.jpg
+keywords: ""
+slug: pyton_test
+title: Advanced Pandas
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(reticulate)
+```
+
+First we will load the Energy Indicators data frame of the [energy supply and renewable electricity production](https://wfvvjvoqmcoaadnahbleeb.coursera-apps.org/notebooks/Energy%20Indicators.xls) from the United Nations for the year 2013.
+
+```{python}
+
+import pandas as pd
+
+```
