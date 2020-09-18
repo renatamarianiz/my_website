@@ -105,7 +105,7 @@ disqusShortname = ""
 
     [[params.tiles.showcase]]
       title = "Excess rentals in TfL bike sharing"
-      subtitle = "Comparison of monthly bike rentals between 2015-2019 with 2020
+      subtitle = "Comparison of monthly bike rentals between 2015-2019 with 2020"
       image = "bikes.jpg"
       url = "blogs/magna"
 

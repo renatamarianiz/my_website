@@ -8,7 +8,7 @@
 	<meta name="description" content="Bla Bla Bla">
 	<meta name="author" content="Renata Mariani Zanella">
 	<meta name="generator" content="Hugo 0.74.3" />
-	<title>Magna &middot; Portfolio website of Renata Mariani</title>
+	<title>Excess rentals in TfL bike sharing &middot; Portfolio website of Renata Mariani</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -73,12 +73,110 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Magna</h1>
+                                <h1>Excess rentals in TfL bike sharing</h1>
                             </header>
                             
                                 <span class="image main"><img src="/img/blogs/pic09.jpg" alt="" /></span>
                             
                             
+
+
+<p>Our aim is to calculate the expected number of rentals per month between 2015-2019. Afterwards, we will see how each month of 2020 compares to the expected rentals.</p>
+<p>First we will upload the TfL data of daily-bike rentals with the following code.</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-09-18T09%3A06%3A54/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200918%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20200918T124536Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=67f564f005096b7288b0a1ec60925068f59da9bba394b508ec417f3df610cf8c&amp;X-Amz-SignedHeaders=host]
+##   Date: 2020-09-18 12:45
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 165 kB
+## &lt;ON DISK&gt;  /var/folders/wk/34g_czcj4gdfkjp04t0xy_r00000gn/T//RtmpY7MKyk/file2b0e194ca909.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))</code></pre>
+<p>Our aim is to calculate the expected number of rentals per month between 2015-2019. Afterwards, we will see how each month of 2020 compares to the expected rentals. For that, we will first calculate the average bike rentals for each month (considering all years). Later we will plot the monthly weekly rental average per year and fill the difference between this and the expected average. When the monthly average per year is lower than the total average, the fill should be red, otherwise green.</p>
+<pre class="r"><code>#first we need to filter our database to have only years &gt;= 2015
+bike_filtered &lt;- 
+  bike %&gt;% filter(year &gt;= 2015)
+
+#summarizing per month - we don&#39;t need the week value, only monthly
+bike_filtered &lt;- 
+  bike_filtered %&gt;% 
+  group_by(year,month) %&gt;% 
+  summarize(bikes_hired = mean(bikes_hired))
+
+#now we will calculate the monthly average throughout the years and save it in a new column
+bike_filtered &lt;- 
+  bike_filtered %&gt;% 
+  group_by(month) %&gt;% 
+  mutate(average_hire = mean(bikes_hired)) %&gt;% 
+  ungroup()
+
+#calculate the change from monthly average
+bike_filtered &lt;-
+  bike_filtered  %&gt;% 
+  mutate(change_monthlyavg = bikes_hired - average_hire)
+
+#we will first need to interpolate the dataframe to fix graph intersections while making the ribbon
+bike_interp &lt;- bike_filtered  %&gt;% 
+  #splitting the dataframe - one for each year
+  split(.$year) %&gt;% 
+  #now we will create a df of interpolated values using map
+                      #interpolated months and bikes hired
+  map_df(~data.frame(year = approx(.x$month, .x$bikes_hired, n = 80), 
+                     #interpolated months and avg hire
+                     nat = approx(.x$month, .x$average_hire, n = 80), 
+                     #label for each year
+                     year = .x$year[1],
+                     #label for each month
+                     month = .x$month[1]))
+
+#creating a vector with month names
+month_label &lt;- c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;,
+           &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+           &quot;Jul&quot;, &quot;Aug&quot;,&quot;Sep&quot;, 
+           &quot;Oce&quot;, &quot;Nov&quot;, &quot;Dec&quot;)
+
+#now we will plot our graph with these interpolated values
+challenge2.1 &lt;- ggplot(bike_interp, aes(x = nat.x,y= nat.y)) +  facet_wrap(~year) +
+  geom_line(color = &quot;#1d00f6&quot;, size = 2) +
+  geom_line(aes(nat.x, year.y), color = &quot;black&quot;) +
+  #adding ribbons - fills area between plots
+  geom_ribbon(aes(ymin = nat.y, ymax = pmin(year.y, nat.y)), fill = &quot;#EAB5B7&quot; , alpha = 0.8) +
+  geom_ribbon(aes(ymin = year.y, ymax = pmin(year.y, nat.y)), fill = &quot;#CBECCE&quot;, alpha = 0.8) +
+  #change theme
+  theme_minimal() +
+  #change our x-axis, currently it has the interpolated values
+  scale_x_continuous(breaks= c(1,2,3,4,5,6,7,8,9,10,11,12),
+        labels=month_label) +
+  #adding titles
+  labs(title = &quot;Monthly changes in TfL bike rentals&quot;,
+       subtitle = &quot;Change from monthly average shown in blue \nand calculated between 2015-2019&quot;,
+       caption = &quot;Source: TfL, London Data Store&quot;,
+       y = &quot;Bike rentals&quot;,
+       x = &quot;&quot;) +
+  #making titles bold
+  theme(plot.title = element_text(face = &quot;bold&quot;),
+        axis.title = element_text(face = &quot;bold&quot;),
+        plot.caption = element_text(face = &quot;bold&quot;)) +
+  theme(aspect.ratio=2/5)
+
+#showing plot
+challenge2.1</code></pre>
+<p><img src="/blogs/blog2.md_files/figure-html/tfl_absolute_monthly_change_code-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>Due to the lockdown restrictions imposed by the government as a measurement to fight the current pandemic, 2020 has had the lowest rental values for March and April. In these months it would be normally expected an increase in rentals due to the end of winter and beginning of spring. On the other hand, values rocketed in just one month (from April to May). This is probably because restrictions still applied and people wanted to do some physical exercise, and at the same time not spend so much money on purchasing a new bike. Values for July are under the expected when considering the normal bike rental average. Notwithstanding, even though the sudden increase in usage, 2018 shows the highest amount of bike rentals, specifically during the summer.</p>
+
                         </div>
                     </section>
             <!-- Disqus Inject -->
