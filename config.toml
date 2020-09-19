@@ -100,7 +100,7 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "Pay discrimination in Omega Group Plc."
       subtitle = "Is there a significant difference between salaries for men and women in Omega Group?"
-      image = "pic02.jpg"
+      image = "salarydif.jpg"
       url = "blogs/tempus"
 
     [[params.tiles.showcase]]
