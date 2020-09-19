@@ -12,12 +12,13 @@
     
     
     <item>
-      <title>Advanced Pandas</title>
+      <title>Brexit Voting</title>
       <link>/blogs/aliquam/</link>
       <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/aliquam/</guid>
-      <description>library(reticulate) First we will load the Energy Indicators data frame of the energy supply and renewable electricity production from the United Nations for the year 2013.</description>
+      <description>Firstly, we will take a quicky look at the results of the 2016 Brexit vote in the UK.
+brexit_results &amp;lt;- read_csv(here::here(&amp;quot;Data&amp;quot;,&amp;quot;brexit_results.csv&amp;quot;)) glimpse(brexit_results) ## Rows: 632 ## Columns: 11 ## $ Seat &amp;lt;chr&amp;gt; &amp;quot;Aldershot&amp;quot;, &amp;quot;Aldridge-Brownhills&amp;quot;, &amp;quot;Altrincham and Sale … ## $ con_2015 &amp;lt;dbl&amp;gt; 50.592, 52.050, 52.994, 43.979, 60.788, 22.418, 52.454, 2… ## $ lab_2015 &amp;lt;dbl&amp;gt; 18.333, 22.369, 26.686, 34.781, 11.197, 41.022, 18.441, 4… ## $ ld_2015 &amp;lt;dbl&amp;gt; 8.824, 3.367, 8.383, 2.</description>
     </item>
     
     <item>
