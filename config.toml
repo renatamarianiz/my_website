@@ -83,7 +83,7 @@ disqusShortname = ""
     # the 'static/img' folder.
     title = "Hi, my name is Renata"
     subtitle = "THIS IS MY PERSONAL PAGE"
-    buttonText = "Find out more info"
+    buttonText = "find out more about my projects!"
 
   # Tiles Section
   [params.tiles]
