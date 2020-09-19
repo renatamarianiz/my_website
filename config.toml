@@ -92,9 +92,9 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Aliquam"
-      subtitle = "Ipsum Dolor Sit Amet"
-      image = "pic01.jpg"
+      title = "Brexit Voting"
+      subtitle = "Analysis of the Brexit Voting per constituency and party in the UK"bl
+      image = "brexit.jpg"
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
