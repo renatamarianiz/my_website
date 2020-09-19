@@ -6,4 +6,4 @@ slug: blogs
 title: My Projects
 ---
 
-Here you can find some projects I have developed in R
+Here you can find some projects that I have developed in R

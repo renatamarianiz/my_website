@@ -72,9 +72,9 @@ disqusShortname = ""
       url = "blogs"
 
     # Button Style 2
-    [[params.navigation.button2]]
-      name = "Log In"
-      url = "#"
+ #   [[params.navigation.button2]]
+ #     name = "Log In"
+ #    url = "#"
 
 
   # Banner section
