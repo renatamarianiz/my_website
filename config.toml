@@ -93,7 +93,7 @@ disqusShortname = ""
     
     [[params.tiles.showcase]]
       title = "Brexit Voting"
-      subtitle = "Analysis of the Brexit Voting per constituency and party in the UK"bl
+      subtitle = "Analysis of the Brexit Voting per constituency and party in the UK"
       image = "brexit.jpg"
       url = "blogs/aliquam"
 
