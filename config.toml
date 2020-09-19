@@ -98,8 +98,8 @@ disqusShortname = ""
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
+      title = "Pay discrimination in Omega Group Plc."
+      subtitle = "Is there a significant difference between salaries for men and women in Omega Group?"
       image = "pic02.jpg"
       url = "blogs/tempus"
 
@@ -111,7 +111,7 @@ disqusShortname = ""
 
     [[params.tiles.showcase]]
       title = "2016 California Contributors"
-      subtitle = "Plots of the california contributors in 2016 using R"
+      subtitle = "Plots of the california contributors in 2016"
       image = "blog1.jpg"
       url = "blogs/ipsum"
 

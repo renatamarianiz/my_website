@@ -6,10 +6,21 @@
     <description>Recent content in ggplot on Portfolio website of Renata Mariani</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 31 Oct 2017 21:28:43 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 31 Oct 2017 22:26:09 -0500</lastBuildDate>
     
 	<atom:link href="/categories/ggplot/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Excess rentals in TfL bike sharing</title>
+      <link>/blogs/magna/</link>
+      <pubDate>Tue, 31 Oct 2017 22:26:09 -0500</pubDate>
+      
+      <guid>/blogs/magna/</guid>
+      <description>Our aim is to calculate the expected number of rentals per month between 2015-2019. Afterwards, we will see how each month of 2020 compares to the expected rentals.
+First we will upload the TfL data of daily-bike rentals with the following code.
+url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&amp;quot; # Download TFL data to temporary file httr::GET(url, write_disk(bike.temp &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;))) ## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-09-18T09%3A06%3A54/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200918%2Feu-west-1%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20200918T124536Z&amp;amp;X-Amz-Expires=300&amp;amp;X-Amz-Signature=67f564f005096b7288b0a1ec60925068f59da9bba394b508ec417f3df610cf8c&amp;amp;X-Amz-SignedHeaders=host] ## Date: 2020-09-18 12:45 ## Status: 200 ## Content-Type: application/vnd.</description>
+    </item>
     
     <item>
       <title>2016 California Contributors plots</title>
