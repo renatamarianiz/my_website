@@ -8,7 +8,7 @@
 	<meta name="description" content="Bla Bla Bla">
 	<meta name="author" content="Renata Mariani Zanella">
 	<meta name="generator" content="Hugo 0.74.3" />
-	<title>Tempus &middot; Portfolio website of Renata Mariani</title>
+	<title>Pay discrimination in Omega Group Plc. &middot; Portfolio website of Renata Mariani</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -73,7 +73,7 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Tempus</h1>
+                                <h1>Pay discrimination in Omega Group Plc.</h1>
                             </header>
                             
                                 <span class="image main"><img src="/img/blogs/pic08.jpg" alt="" /></span>
@@ -81,7 +81,230 @@
                             
 
 
+<div id="is-there-a-relevant-difference-between-female-and-male-salaries" class="section level2">
+<h2>Is there a relevant difference between female and male salaries?</h2>
+<p>At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women. This seemed like a considerable difference, so it was decided that a further analysis of the company salaries was warranted.</p>
+<p>In this project the main idea is to find out whether there is indeed a significant difference between the salaries of men and woman, and whether, if existant, this difference in due to discrimination or if it is based on another determining factor. We will make different analysis throughout the project to answer this question.</p>
+<p>First we will load our database, with 50 salary entries. We will then examine it by using the glimpse function, which provides us with a snapshot of the data.</p>
+<pre class="r"><code>omega &lt;- read_csv(here::here(&quot;data&quot;, &quot;omega.csv&quot;))
+glimpse(omega) # examine the data frame</code></pre>
+<pre><code>## Rows: 50
+## Columns: 3
+## $ salary     &lt;dbl&gt; 81894, 69517, 68589, 74881, 65598, 76840, 78800, 70033, 63…
+## $ gender     &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;m…
+## $ experience &lt;dbl&gt; 16, 25, 15, 33, 16, 19, 32, 34, 1, 44, 7, 14, 33, 19, 24, …</code></pre>
+<p>We can see that our dataframe is composed of only three features (columns) that being salary (double), gender (character) and experience (double). The data seems to be in the correct format, so we can proceed to the data analysis.</p>
+<p>We will first check if there is a difference between the salaries of the male and female executives.To do this, we will first separate our dataset into two smaller ones, separated by female and male. We will then run bootstraps in both these datasets. The bootstrap function will create random sets of data so that we are able to calculate the mean and most importantly, calculate a 95% confidence interval. We will then merge both datasets again, so that we have only one variable with all needed values. Then, we will plot a density plot with our results, colouring points by sex.</p>
+<pre class="r"><code>#Male - Bootstrap sampling calculation
+salary_bootstrap_male &lt;- omega %&gt;% 
+  filter(gender == &quot;male&quot;) %&gt;% 
+  # Specify the variable of interest
+  specify(response = salary) %&gt;%
+  generate(reps = 1000, type = &quot;bootstrap&quot;) %&gt;%
+  # Find the mean of each sample
+  calculate(stat = &quot;mean&quot;)
+  
+#Female - Bootstrap sampling calculation
+salary_bootstrap_female &lt;- omega %&gt;% 
+  filter(gender == &quot;female&quot;) %&gt;% 
+  # Specify the variable of interest
+  specify(response = salary) %&gt;%
+  generate(reps = 1000, type = &quot;bootstrap&quot;) %&gt;%
+  # Find the mean of each sample
+  calculate(stat = &quot;mean&quot;)
+  
+#calculating confidence intervals (with 95% of confidence) for the salary of males and females
+male_ci &lt;- salary_bootstrap_male %&gt;% 
+  get_confidence_interval(level=0.95, type=&quot;percentile&quot;)
+female_ci &lt;- salary_bootstrap_female %&gt;% 
+  get_confidence_interval(level=0.95, type=&quot;percentile&quot;)
 
+#adding a gender column to the bootstrapped salary data - to help after merging the datasets
+salary_bootstrap_female &lt;- salary_bootstrap_female %&gt;% 
+  mutate(gender = &quot;female&quot;)
+salary_bootstrap_male &lt;- salary_bootstrap_male %&gt;% 
+  mutate(gender = &quot;male&quot;)
+
+#combining both dataframes 
+combined_salary_bootstrap &lt;- rbind(salary_bootstrap_female, salary_bootstrap_male)
+  
+#plotting the density of both dataframes
+ggplot(combined_salary_bootstrap) + 
+  shade_confidence_interval(male_ci, fill = &quot;#69D4D8&quot;, color = &quot;#69D4D8&quot;, alpha=0.3) +
+  shade_confidence_interval(female_ci, fill = &quot;#FEA9A7&quot;, color = &quot;#FEA9A7&quot;, alpha=0.3) +
+  geom_density(aes(x=stat, fill=gender, fill=gender), color=&quot;black&quot;, alpha = 0.3) +
+  labs(title = &quot;On average men and women have large differences in yearly salary!&quot;, x = &quot;Salary&quot;, y = &quot;Density&quot;, subtitle = &quot;95% confidence interval shaded&quot;) + 
+  theme_bw()</code></pre>
+<p><img src="/blogs/blog3.md_files/figure-html/confidence_intervals_salary_bootstrap-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>Through this graph we can see that there is actually a huge difference in the mean salary between males and females. Moreover, it is also noticeable that both confidence intervals are quite differents and they almost don’t overlap.</p>
+<p>We will now use summary statistics of the salary by gender to analyse this difference further. We will calculate the mean, SD, sample size, t-critical, SE, margin of error and the confidence interval of 95%.</p>
+<pre class="r"><code># Using  the formula for summary statistics (given by favstats)
+mosaic::favstats (salary ~ gender, data=omega)</code></pre>
+<pre><code>##   gender   min    Q1 median    Q3   max  mean   sd  n missing
+## 1 female 47033 60338  64618 70033 78800 64543 7567 26       0
+## 2   male 54768 68331  74675 78568 84576 73239 7463 24       0</code></pre>
+<pre class="r"><code>#Calculating summary statistics via statistical formulaes
+formula_ci &lt;- omega %&gt;% 
+  group_by(gender) %&gt;% 
+  summarise(mean_salary = mean(salary, na.rm = TRUE), 
+            sd_salary = sd(salary, na.rm = TRUE), 
+            count_salary = n(), 
+            se_salary = sd_salary/sqrt(count_salary), 
+            t_critical = qt(0.975, count_salary-1),
+            lower_salary = mean_salary - t_critical * se_salary,
+            upper_salary = mean_salary + t_critical * se_salary)
+
+#displaning the formulae result
+formula_ci</code></pre>
+<pre><code>## # A tibble: 2 x 8
+##   gender mean_salary sd_salary count_salary se_salary t_critical lower_salary
+##   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;        &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+## 1 female      64543.     7567.           26     1484.       2.06       61486.
+## 2 male        73239.     7463.           24     1523.       2.07       70088.
+## # … with 1 more variable: upper_salary &lt;dbl&gt;</code></pre>
+<p>In the first table we can see the data separated in quartiles. It is now numerically clear that they do not overlap. In addition, it is possible to see that the maximum female salary is in the range of the Q3 of the male salary.</p>
+<p>We will also run a hyphothesis test to confirm, once more, the existance of a discreption between the mean salary of males and females. Our null hyphothesis will assume that the mean difference of salary is zero, in other words, that men and women make, in average, the same amount of money. On the other hand, our H1 will assume that the mean salary between them difer.</p>
+<p>To run our hyphothesis testing, we will use the t.test() and a simulation method from the infer package, they will be further described in the code below.</p>
+<pre class="r"><code>set.seed(1234)
+
+obs_stat &lt;- omega %&gt;% 
+  specify(salary ~gender) %&gt;% 
+  calculate(stat = &quot;diff in means&quot;)
+
+salary_in_equal_world &lt;- omega %&gt;% 
+  specify(salary ~ gender) %&gt;% 
+  hypothesize(null = &quot;independence&quot;) %&gt;% 
+  generate(reps = 1000, type = &quot;permute&quot;) %&gt;% 
+  calculate(stat = &quot;diff in means&quot;,
+            order = c(&quot;male&quot;, &quot;female&quot;))
+
+test &lt;- t.test(salary ~ gender, data = omega)
+test</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  salary by gender
+## t = -4, df = 48, p-value = 2e-04
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -12973  -4420
+## sample estimates:
+## mean in group female   mean in group male 
+##                64543                73239</code></pre>
+<p>Now we will create a visualization, so that we can graphically analyse our t-test.</p>
+<pre class="r"><code>salary_in_equal_world %&gt;%  
+  visualize(bins = 15, 
+            method = &quot;simulation&quot;, 
+            obs_stat = obs_stat, 
+            direction = &quot;two sided&quot;)</code></pre>
+<p><img src="/blogs/blog3.md_files/figure-html/visualize_p_test-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>The results of our t-test strenghtens our hyphothesis that there is indeed a salary difference between genders. The extremeley low p-value of 2E-04 suggests that the probability of observing the sample mean, given that the H0 is true, is very low. Therefore this allows us to reject the H0 that there is no signficant difference in salary between genders in favor of our H1. Further support for this is the high t-value of -4, as well as the non-overlapping confidence intervals.</p>
+<p>In conclusion, all three analysis suggest that salary between men and women is not distributed equally.</p>
+</div>
+<div id="is-this-salary-change-explained-by-differences-in-experience" class="section level2">
+<h2>Is this salary change explained by differences in experience?</h2>
+<p>At the board meeting, someone raised the issue that there was indeed a substantial difference between male and female salaries, but that this was attributable to other reasons such as differences in experience. A questionnaire send out to the 50 executives in the sample reveals that the average experience of the men is approximately 21 years, whereas the women only have about 7 years experience on average, this is shown in the table bellow.</p>
+<pre class="r"><code># Summary Statistics of salary by gender
+favstats (experience ~ gender, data=omega)</code></pre>
+<pre><code>##   gender min    Q1 median   Q3 max  mean    sd  n missing
+## 1 female   0  0.25    3.0 14.0  29  7.38  8.51 26       0
+## 2   male   1 15.75   19.5 31.2  44 21.12 10.92 24       0</code></pre>
+<p>Based on this analysis, we can conclude that there is a significant difference between the experience of the male and female executives. We will now perform similar analysis as before to validate/contradict our conclusion abour the difference in male and female salaries.</p>
+<p>We will first calculate a bootstrap for each sex, putting experience as the researched variable. We will then calculate the CI intervals and plot the density of both results.</p>
+<pre class="r"><code>#calculating the salary values with 95% confidence
+experience_bootstrap_male &lt;- omega %&gt;% 
+  filter(gender == &quot;male&quot;) %&gt;% 
+  # Specify the variable of interest
+  specify(response = experience) %&gt;%
+  generate(reps = 1000, type = &quot;bootstrap&quot;) %&gt;%
+  # Find the mean of each sample
+  calculate(stat = &quot;mean&quot;)
+  #get_confidence_interval(level=0.95, type=&quot;percentile&quot;)
+  
+experience_bootstrap_female &lt;- omega %&gt;% 
+  filter(gender == &quot;female&quot;) %&gt;% 
+  # Specify the variable of interest
+  specify(response = experience) %&gt;%
+  generate(reps = 1000, type = &quot;bootstrap&quot;) %&gt;%
+  # Find the mean of each sample
+  calculate(stat = &quot;mean&quot;)
+
+#calculating confidence intervals
+male_ci &lt;- experience_bootstrap_male %&gt;% 
+  get_confidence_interval(level=0.95, type=&quot;percentile&quot;)
+female_ci &lt;- experience_bootstrap_female %&gt;% 
+  get_confidence_interval(level=0.95, type=&quot;percentile&quot;)
+
+#adding a gender column to the bootstrapped experience data
+experience_bootstrap_female &lt;- experience_bootstrap_female %&gt;% 
+  mutate(gender = &quot;female&quot;)
+experience_bootstrap_male &lt;- experience_bootstrap_male %&gt;% 
+  mutate(gender = &quot;male&quot;)
+
+#combnining both dataframes 
+combined_experience_bootstrap &lt;- rbind(experience_bootstrap_female, experience_bootstrap_male)
+  
+#plotting density of both dataframes
+ggplot(combined_experience_bootstrap) + 
+  geom_density(aes(x=stat, fill=gender, fill=gender),color=&quot;black&quot;, alpha = 0.3) +
+  shade_confidence_interval(male_ci, fill = &quot;#69D4D8&quot;, color = &quot;#69D4D8&quot;, alpha=0.3) +
+  shade_confidence_interval(female_ci, fill = &quot;#FEA9A7&quot;, color = &quot;#FEA9A7&quot;, alpha=0.3) +
+  labs(title = &quot;On average men have more work experience than women in similar positions!&quot;, x = &quot;Years of experience&quot;, y = &quot;Density&quot;, subtitle = &quot;95% confidence interval shaded&quot;) +
+  theme_bw()</code></pre>
+<p><img src="/blogs/blog3.md_files/figure-html/bootstrap_sexsalary-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>As we can see, it is clear that men have more years of work experience than women in similar positions. However, we will still perform a t-test. Our hyphothesis are the following:</p>
+<p>H0: There is no significant difference in experience between genders.
+H1: Mean experience between gender differs.</p>
+<pre class="r"><code>set.seed(1234)
+salary_in_equal_world &lt;- omega %&gt;% 
+  specify(experience ~ gender) %&gt;% 
+  hypothesize(null = &quot;independence&quot;) %&gt;% 
+  generate(reps = 1000, type = &quot;permute&quot;) %&gt;% 
+  calculate(stat = &quot;diff in means&quot;,
+            order = c(&quot;female&quot;, &quot;male&quot;))
+
+test &lt;- t.test(experience ~ gender, data = omega)
+test</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  experience by gender
+## t = -5, df = 43, p-value = 1e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -19.35  -8.13
+## sample estimates:
+## mean in group female   mean in group male 
+##                 7.38                21.12</code></pre>
+<p>The extremeley low p-value of 0.0000123 suggests that the probability of observing the sample mean, given that the H0 is true, is very low. Therefore this allows us to reject the H0 that there is no signficant difference in experience between genders in favor of our H1. Further support for this is the high t-value of -5, as well as the non-overlapping confidence intervals.</p>
+<p>Therefore this hypothesis test suggests that on average experience between men and women is not distributed equally.</p>
+</div>
+<div id="is-there-instead-a-relationship-between-salary-and-experience" class="section level2">
+<h2>Is there instead a relationship between salary and experience?</h2>
+<p>Someone at the meeting argues that clearly, a more thorough analysis of the relationship between salary and experience is required before any conclusion can be drawn about whether there is any gender-based salary discrimination in the company.</p>
+<p>We will now analyse the relationship between salary and experience. We will draw a scatterplot to be able to visually see this relationship.</p>
+<pre class="r"><code>ggplot(omega, aes(x=experience, y=salary)) + 
+  geom_smooth(method = &quot;lm&quot;, color=&quot;black&quot;) + 
+  geom_point(aes(color=gender), alpha=0.6) + 
+  annotate(x=25, y=79000, 
+         label=paste(&quot;R = &quot;, round(cor(omega$salary, omega$experience),3)), 
+         geom=&quot;text&quot;, size=5) +
+  labs(title = &quot;On average increased job experience leads to an increased yearly salary!&quot;, x = &quot;Years of experience&quot;, y = &quot;Yearly Salary&quot;, subtitle = &quot;Correlation between yearly income and years of job experience&quot;) +
+  theme_bw()</code></pre>
+<p><img src="/blogs/blog3.md_files/figure-html/salary_exp_scatter-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>We can see that Years of experience is highly correlated with yearly salary.</p>
+</div>
+<div id="checking-the-correlation-between-the-data" class="section level2">
+<h2>Checking the correlation between the data</h2>
+<p>Lets take a look correlation matrix to closer inspect the correlation between these variables.</p>
+<pre class="r"><code>omega %&gt;% 
+  select(gender, experience, salary) %&gt;% #order variables they will appear in ggpairs()
+  ggpairs(aes(colour=gender, alpha = 0.3))+
+  theme_bw()</code></pre>
+<p><img src="/blogs/blog3.md_files/figure-html/ggpairs-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>When looking at the salary vs experience scatterplot it becomes apparent that there is a strong positive correlation between these two variables. Thus suggesting that, on average, an individual having more work experience will be earning more money than those with very little experience. Logically thinking this is a reasonable trend, as one would assume individuals with more experience to be more efficient at their jobs.</p>
+<p>An other interesting observation that can be inferred from this is the fact that the average work experience of men is much greater than that of women. Thus, this could be one the factors, leading to the lower average salary earned by female workers. I believe that this variable should be further researched to discover why is there a huge experience gap.</p>
+</div>
 
                         </div>
                     </section>

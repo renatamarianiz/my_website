@@ -6,10 +6,19 @@
     <description>Recent content in R on Portfolio website of Renata Mariani</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 31 Oct 2017 22:26:09 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 31 Oct 2017 22:26:13 -0500</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pay discrimination in Omega Group Plc.</title>
+      <link>/blogs/tempus/</link>
+      <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
+      
+      <guid>/blogs/tempus/</guid>
+      <description>Is there a relevant difference between female and male salaries? At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women.</description>
+    </item>
     
     <item>
       <title>Excess rentals in TfL bike sharing</title>

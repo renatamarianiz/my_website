@@ -1,7 +1,7 @@
 ---
 categories:
-- ""
-- ""
+- "R"
+- "Statistics"
 date: "2017-10-31T22:26:13-05:00"
 description: The objective is to find out whether there is a significant difference between salaries for men and women in Omega Group and also if this difference is due to discrimination or if it is based on another determining factor.
 draft: false
@@ -139,7 +139,7 @@ We will also run a hyphothesis test to confirm, once more, the existance of a di
 
 To run our hyphothesis testing, we will use the t.test() and a simulation method from the infer package, they will be further described in the code below.
 
-```{r, hypothesis_testing_t_test}
+```{r, hypothesis_testing_t_test_gender}
 
 set.seed(1234)
 
@@ -189,7 +189,7 @@ Based on this analysis, we can conclude that there is a significant difference b
 
 We will first calculate a bootstrap for each sex, putting experience as the researched variable. We will then calculate the CI intervals and plot the density of both results.
 
-```{r, experience_stats}
+```{r, bootstrap_sexsalary}
 
 #calculating the salary values with 95% confidence
 experience_bootstrap_male <- omega %>% 
