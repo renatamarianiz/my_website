@@ -135,8 +135,8 @@ challenge2.1 <- ggplot(bike_interp, aes(x = nat.x,y= nat.y)) +  facet_wrap(~year
   #making titles bold
   theme(plot.title = element_text(face = "bold"),
         axis.title = element_text(face = "bold"),
-        plot.caption = element_text(face = "bold")) +
-  theme(aspect.ratio=2/5)
+        plot.caption = element_text(face = "bold")) #+
+  #theme(aspect.ratio=2/5)
 
 #showing plot
 challenge2.1

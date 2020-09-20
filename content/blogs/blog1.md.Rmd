@@ -129,7 +129,7 @@ library(patchwork)
 hillary_trump_top10 <- hillary + trump +
   plot_annotation(title = "Where did candidates raise most money?", caption = "Amount Raised") 
   theme_update(plot.title = element_text(size = 10, hjust = 0.1, face = "bold"),
-               aspect.ratio = 2/1,
+               #aspect.ratio = 2/1,
                plot.caption = element_text(hjust = 0.55, vjust = 0.5, face = "bold"))
 
 
